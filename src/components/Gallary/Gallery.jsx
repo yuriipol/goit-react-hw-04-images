@@ -25,9 +25,14 @@ function Gallery({ imageName }) {
           data => data.hits
         );
         if (imageName !== imageNameRef.current) {
-          setPage(1);
+          // setPage(1);
           imageNameRef.current = imageName;
+          setImages([...data]);
+          setStatus('resolved');
+          // console.log('proverka current name');
+          return;
         }
+        // console.log('next page');
         setImages(prevImages => [...prevImages, ...data]);
         setStatus('resolved');
       } catch (error) {
@@ -37,6 +42,7 @@ function Gallery({ imageName }) {
     };
 
     if (imageName) {
+      // setPage(1);
       fetchImages();
     }
     /* eslint-disable-next-line */

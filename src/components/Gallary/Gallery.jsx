@@ -7,7 +7,11 @@ import Modal from 'components/Modal';
 import Button from 'components/Button';
 import { getImages } from '../Servises/PictureAPI';
 
-function Gallery({ imageName }) {
+function Gallery({
+  imageName,
+  // page,
+  // onClickLoadMore
+}) {
   const [images, setImages] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [error, setError] = useState(null);
@@ -15,11 +19,7 @@ function Gallery({ imageName }) {
   const [lageImage, setLageImage] = useState('');
   const [status, setStatus] = useState('idle');
 
-  const imageNameRef = useRef(
-    imageName
-    // page,
-    // onClickLoadMore
-  );
+  const imageNameRef = useRef(imageName);
 
   useEffect(() => {
     const fetchImages = async () => {

@@ -15,25 +15,37 @@ function Gallery({ imageName }) {
   const [lageImage, setLageImage] = useState('');
   const [status, setStatus] = useState('idle');
 
-  const imageNameRef = useRef(imageName);
+  const imageNameRef = useRef(
+    imageName
+    // page,
+    // onClickLoadMore
+  );
 
   useEffect(() => {
     const fetchImages = async () => {
+      const isNewSearch = imageName !== imageNameRef.current;
+
+      if (!imageName || (!isNewSearch && page === 1)) {
+        return;
+      }
+
       try {
         const currentPage = imageName !== imageNameRef.current ? 1 : page;
         const data = await getImages(imageName, currentPage).then(
           data => data.hits
         );
-        if (imageName !== imageNameRef.current) {
-          // setPage(1);
+        if (isNewSearch) {
+          setPage(1);
           imageNameRef.current = imageName;
-          setImages([...data]);
-          setStatus('resolved');
-          // console.log('proverka current name');
-          return;
+          // setImages([...data]);
+          // setStatus('resolved');
+          // return;
         }
-        // console.log('next page');
-        setImages(prevImages => [...prevImages, ...data]);
+
+        setImages(prevImages => {
+          const images = isNewSearch ? [] : prevImages;
+          return [...images, ...data];
+        });
         setStatus('resolved');
       } catch (error) {
         setError(error);
@@ -42,7 +54,6 @@ function Gallery({ imageName }) {
     };
 
     if (imageName) {
-      // setPage(1);
       fetchImages();
     }
     /* eslint-disable-next-line */
